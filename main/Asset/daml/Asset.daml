@@ -95,7 +95,7 @@ template Transfer with
     issuer:Party
     quantity:Decimal
     --transfer from 
-    from: Partycd
+    from: Party
     --transfer to
     to: Party
     transferType: Text
