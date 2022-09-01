@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Button, Card, CardContent, Typography } from "@mui/material";
 import {
   useGetMyAssetAccountByKey,
-  
+  useGetAssetTransferByContractId,
   useLedgerHooks,
 } from "../ledgerHooks/ledgerHooks";
 import { AssetDetails } from "../components/AssetDetails/AssetDetails";
@@ -30,7 +30,9 @@ export const PendingSendDetailsPage: React.FC = () => {
   const nav = useNavigate();
 
   //TODO: can we use something else besdies contract
-
+  const assetTransferResponse = useGetAssetTransferByContractId({
+    contractId: contractId as ContractId<AssetTransfer>,
+  });
   const assetTransferCid = assetTransferResponse.contract?.contractId;
   const assetAccountResponse = useGetMyAssetAccountByKey({
     issuer,
@@ -38,6 +40,7 @@ export const PendingSendDetailsPage: React.FC = () => {
     fungible: isFungible,
     reference,
   });
+  
   const assetAccountCid = assetAccountResponse.contract?.contractId;
   const classes = usePageStyles();
   const ledgerHooks = useLedgerHooks();

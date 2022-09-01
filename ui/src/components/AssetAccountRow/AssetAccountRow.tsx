@@ -80,7 +80,7 @@ export const AssetAccountRow: React.FC<AssetAccountRowProps> = React.memo(({
   const airdropRequestPath = `/airdrop-request${paramsString}`;
   const assetInvitePath = `/invite${paramsString}`;
   const issueAirdropPath = `/issue${paramsString}`;
-  const transactionPath= `/transactions${paramsString}`
+  const transactionPath= `/transactionstoken${paramsString}`;
   const assetSum = getAssetSum(contracts);
   const formattedSum = numberWithCommas(assetSum);
   return (

@@ -41,19 +41,25 @@ import {Asset} from "@daml.js/asset";
 import {Transfer} from "@daml.js/account";
 import { useStreamQueries } from "@daml/react";
 import { TransferRow} from "../components/TransactionRow/TransactionRow";
-export const Transactions: React.FC = () => {
+
+export const TransactionsSpecific: React.FC = () => {
   const nav = useNavigate();
 
   const classes = usePageStyles();
   const onClick = () => {
     nav(-1);
   };
+// getting query params
+  const search = useLocation().search;
+  const symbol = new URLSearchParams(search).get('symbol');
+//console.log("Symbol",symbol)
 
   const { loading, contracts } = useGetAllOutTransfer();
 
 
 
 const transactionRows = contracts.map((contract) => (
+  contract.payload.asset.symbol==symbol?
   <TransferRow
     key={contract.contractId}
     contractId={contract.contractId}
@@ -64,8 +70,9 @@ const transactionRows = contracts.map((contract) => (
     transferType={contract.payload.transferType}
     from={contract.payload.from}
     to={contract.payload.to} owner={""}
-    quantity={contract.payload.quantity}
-    timeStamp={contract.payload.time}    />
+    quantity={contract.payload.quantity}  
+    timeStamp={contract.payload.time}
+    />:null
 ));
 
 
@@ -95,7 +102,8 @@ const transactionRows = contracts.map((contract) => (
               variant="h5"
               sx={{ flexGrow: 1, marginLeft: "auto" }}
             >
-              Transaction History
+              Transaction History for {symbol}
+                
             </Typography>
           </Box>
   

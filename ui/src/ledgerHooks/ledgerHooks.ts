@@ -7,18 +7,20 @@ import { userContext } from '../App';
 import { Archive } from '@daml.js/d14e08374fc7197d6a0de468c968ae8ba3aadbf9315476fd39071831f5923662/lib/DA/Internal/Template';
 
 const {AssetHoldingAccount, AssetHoldingAccountProposal, AssetInSwap, Trade, TransferPreApproval, AssetHoldingAccountCloseProposal, AirdropRequest } = Account
-const {Transfer}=Asset
+const {Transfer}= Asset
 export const useGetAllAssetHoldingAccounts = () => {
   const myPartyId = userContext.useParty();
   const res = userContext.useStreamQueries(AssetHoldingAccount, () => [{ owner: myPartyId }]);
   return res
 }
 
-export const useGetAllTransfer = () => {
+
+export const useGetAllOutTransfer = () => {
   const myPartyId = userContext.useParty();
-  const res = userContext.useStreamQueries(Transfer, () => [{ from: myPartyId }]);
+  const res = userContext.useStreamQueries(Transfer, () => []);
   return res
 }
+
 
 interface UseGetMyIssuedAssetAccounts {
   symbol: string;
@@ -52,33 +54,19 @@ export const useGetAssetHoldingAccount = ({ isAirdroppable, isShareable, issuer,
   return assetHoldingAccount
 }
 
-interface UseGetMyTransactionsByAssetType {
-  issuer: string;
-  owner: string;
-  symbol: string;
-  reference: string | null;
-  isFungible: boolean;
-  isShareable?: boolean;
-  isAirdroppable?: boolean;
+interface useGetAssetTransferByContractIdArgs {
+  contractId: ContractId<Asset.AssetTransfer>;
 }
 
-export const useGetMyTransactionsByAssetType = (args: UseGetMyTransactionsByAssetType) => {
-  const { issuer, symbol, isFungible, owner, reference } = args  
-  const res = userContext.useStreamQueries(Asset.Transfer, () => [{ owner, assetType: { issuer, symbol, fungible: isFungible, reference } }]);
-  return res
+export const useGetAssetTransferByContractId = (arg: useGetAssetTransferByContractIdArgs) => {
+  const contract = userContext.useFetch(Asset.AssetTransfer, arg.contractId)
+  return contract
 }
-
 
 export const useGetAssetContractByContractId = (contractId: ContractId<Asset.Asset>) => {
   const contract = userContext.useFetch(Asset.Asset, contractId)
   return contract
 }
-
-export const useGetTransactionContractByContractId = (contractId : ContractId<Asset.Transfer>)=>{
-  const contract = userContext.useFetch(Asset.Transfer, contractId)
-  return contract
-}
-
 export const useGetAssetInSwapContractByContractId = (contractId: ContractId<Account.AssetInSwap>) => {
   const contract = userContext.useFetch(AssetInSwap, contractId)
   return contract
