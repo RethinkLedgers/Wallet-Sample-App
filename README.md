@@ -211,3 +211,4 @@ Once this account is created, other users will be able to receive the automatic 
 # walletpoc
 # walletpoc
 # walletpoc
+# Wallet-Sample-App
